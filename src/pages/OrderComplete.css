@@ -56,4 +56,9 @@
   display: flex;
   gap: 16px;
   justify-content: center;
+}
+
+.order-complete-icon-large {
+  font-size: 80px !important;
+  margin-bottom: 16px;
 } 

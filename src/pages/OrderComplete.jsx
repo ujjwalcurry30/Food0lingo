@@ -41,7 +41,7 @@ const OrderComplete = () => {
           <div className="order-complete-icon-box">
             <CheckCircleIcon 
               color="success" 
-              style={{ fontSize: 80, marginBottom: 16 }} 
+              className="order-complete-icon-large"
             />
             <Typography variant="h4" gutterBottom>
               Order Confirmed!

@@ -95,7 +95,7 @@ const Menu = () => {
             </Typography>
             <div className="menu-restaurant-rating-box">
               <Rating value={selectedRestaurant.rating} precision={0.5} readOnly />
-              <Typography variant="body2" style={{ marginLeft: '8px' }}>
+              <Typography variant="body2" className="menu-restaurant-rating-value">
                 ({selectedRestaurant.rating})
               </Typography>
             </div>
@@ -110,7 +110,7 @@ const Menu = () => {
       </Paper>
 
       {/* Search Bar with Suggestions */}
-      <div style={{ margin: '24px 0', position: 'relative', maxWidth: 400 }}>
+      <div className="menu-search-bar-container">
         <TextField
           fullWidth
           placeholder="Search for food items"
@@ -145,7 +145,7 @@ const Menu = () => {
           }}
         />
         {showSuggestions && suggestions.length > 0 && (
-          <Paper elevation={3} style={{ position: 'absolute', width: '100%', zIndex: 10, maxHeight: 200, overflowY: 'auto' }}>
+          <Paper elevation={3} className="menu-suggestions-dropdown">
             {suggestions.map((item) => (
               <Box
                 key={item.id}

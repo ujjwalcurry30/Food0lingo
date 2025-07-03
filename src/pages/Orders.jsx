@@ -1,11 +1,12 @@
 import React from 'react';
 import { Container, Typography, Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import './Orders.css';
 
 const Orders = () => {
   const navigate = useNavigate();
   return (
-    <Container style={{ textAlign: 'center', padding: '48px 0' }}>
+    <Container className="orders-centered-container">
       <Typography variant="h4" gutterBottom>
         Track Your Orders
       </Typography>

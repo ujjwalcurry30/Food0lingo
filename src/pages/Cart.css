@@ -29,6 +29,10 @@
   margin-top: 16px;
 }
 
+.cart-item-qty-value {
+  margin: 0 16px;
+}
+
 .cart-summary-box {
   margin-top: 24px;
 }
@@ -39,6 +43,10 @@
 
 .cart-summary-total {
   font-weight: bold;
+}
+
+.cart-summary-align-right {
+  text-align: right;
 }
 
 .cart-actions {

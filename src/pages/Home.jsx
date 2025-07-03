@@ -114,7 +114,7 @@ const Home = () => {
               />
             </Grid>
             <Grid item xs={12} md={6}>
-              <div style={{ display: 'flex', gap: '16px' }}>
+              <div className="home-search-bar-actions">
                 <Button
                   variant="outlined"
                   startIcon={<LocationIcon />}
@@ -142,7 +142,7 @@ const Home = () => {
               key={link.key}
               className={`home-quick-link-item${selectedQuickLink === link.key ? ' active' : ''}`}
               onClick={() => setSelectedQuickLink(link.key)}
-              style={{ border: selectedQuickLink === link.key ? '2px solid #1976d2' : undefined }}
+              style={undefined}
             >
               {link.icon}
               <Typography variant="body2">{link.label}</Typography>
@@ -153,30 +153,32 @@ const Home = () => {
         {/* Filters */}
         <div className="home-filters-box">
           <Typography variant="h6">Filters</Typography>
-          <div style={{ display: 'flex', gap: '8px', overflowX: 'auto', flex: 1 }}>
-            {filters.map((filter) => (
-              <Chip
-                key={filter}
-                label={filter}
-                onClick={() => {
-                  if (selectedFilters.includes(filter)) {
-                    setSelectedFilters(selectedFilters.filter(f => f !== filter));
-                  } else {
-                    setSelectedFilters([...selectedFilters, filter]);
-                  }
-                }}
-                color={selectedFilters.includes(filter) ? 'primary' : 'default'}
-                variant={selectedFilters.includes(filter) ? 'filled' : 'outlined'}
-                className="home-filter-chip"
-              />
-            ))}
+          <div className="home-filters-bar">
+            <div style={{ display: 'flex', gap: '8px', overflowX: 'auto', flex: 1 }}>
+              {filters.map((filter) => (
+                <Chip
+                  key={filter}
+                  label={filter}
+                  onClick={() => {
+                    if (selectedFilters.includes(filter)) {
+                      setSelectedFilters(selectedFilters.filter(f => f !== filter));
+                    } else {
+                      setSelectedFilters([...selectedFilters, filter]);
+                    }
+                  }}
+                  color={selectedFilters.includes(filter) ? 'primary' : 'default'}
+                  variant={selectedFilters.includes(filter) ? 'filled' : 'outlined'}
+                  className="home-filter-chip"
+                />
+              ))}
+            </div>
+            <Button
+              variant="outlined"
+              startIcon={<SortIcon />}
+            >
+              Sort
+            </Button>
           </div>
-          <Button
-            variant="outlined"
-            startIcon={<SortIcon />}
-          >
-            Sort
-          </Button>
         </div>
 
         <Divider />
@@ -190,14 +192,14 @@ const Home = () => {
             {filteredRestaurants.map((restaurant) => (
               <Grid item xs={12} sm={6} md={4} key={restaurant.id}>
                 <Card className="home-restaurant-card" onClick={() => handleRestaurantClick(restaurant)}>
-                  <div style={{ position: 'relative' }}>
+                  <div className="home-restaurant-card-image-wrapper">
                     <CardMedia
                       component="img"
                       image={restaurant.image}
                       alt={restaurant.name}
                       className="home-restaurant-image"
                     />
-                    <div style={{ position: 'absolute', top: 10, right: 10, display: 'flex', gap: '8px' }}>
+                    <div className="home-restaurant-card-fav-btn">
                       <IconButton
                         size="small"
                         style={{ background: 'white' }}
@@ -205,39 +207,45 @@ const Home = () => {
                         <FavoriteBorderIcon />
                       </IconButton>
                     </div>
-                    <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, background: 'linear-gradient(transparent, rgba(0,0,0,0.7))', color: 'white', padding: '8px' }}>
-                      <Typography variant="subtitle2">
-                        {restaurant.deliveryTime} • {restaurant.distance} km
-                      </Typography>
+                    <div className="home-restaurant-card-gradient">
+                      <div className="home-flex-between-mb8">
+                        <div>
+                          <Typography variant="h6" component="h2">
+                            {restaurant.name}
+                          </Typography>
+                          <Typography variant="body2" color="text.secondary" className="home-restaurant-cuisine-white">
+                            {restaurant.cuisine}
+                          </Typography>
+                        </div>
+                        <div className="home-restaurant-rating-box">
+                          <Typography variant="body2">
+                            {restaurant.rating} ★
+                          </Typography>
+                        </div>
+                      </div>
+                      <div className="home-mt8-flex-gap8">
+                        <Chip
+                          label={`${restaurant.menu.length} items`}
+                          size="small"
+                          variant="outlined"
+                          className="home-restaurant-chip-white"
+                        />
+                        <Chip
+                          label="Free Delivery"
+                          size="small"
+                          variant="outlined"
+                          className="home-restaurant-chip-white"
+                        />
+                      </div>
                     </div>
                   </div>
                   <CardContent>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '8px' }}>
-                      <div>
-                        <Typography variant="h6" component="h2">
-                          {restaurant.name}
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary">
-                          {restaurant.cuisine}
+                    <div className="home-restaurant-card-content">
+                      <div className="home-restaurant-card-details">
+                        <Typography variant="subtitle2">
+                          {restaurant.deliveryTime} • {restaurant.distance} km
                         </Typography>
                       </div>
-                      <div className="home-restaurant-rating-box">
-                        <Typography variant="body2">
-                          {restaurant.rating} ★
-                        </Typography>
-                      </div>
-                    </div>
-                    <div style={{ marginTop: '8px', display: 'flex', gap: '8px' }}>
-                      <Chip
-                        label={`${restaurant.menu.length} items`}
-                        size="small"
-                        variant="outlined"
-                      />
-                      <Chip
-                        label="Free Delivery"
-                        size="small"
-                        variant="outlined"
-                      />
                     </div>
                   </CardContent>
                 </Card>

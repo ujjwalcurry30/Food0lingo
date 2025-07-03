@@ -130,4 +130,53 @@
   margin-top: 8px;
   display: flex;
   gap: 8px;
+}
+
+.home-search-bar-actions {
+  display: flex;
+  gap: 16px;
+}
+
+.home-filters-bar {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  flex: 1;
+}
+
+.home-restaurant-card-image-wrapper {
+  position: relative;
+}
+
+.home-restaurant-card-fav-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  gap: 8px;
+  background: white;
+}
+
+.home-restaurant-card-gradient {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(transparent, rgba(0,0,0,0.7));
+  color: white;
+  padding: 8px;
+}
+
+.home-restaurant-chip-white {
+  color: #fff !important;
+  border-color: #fff !important;
+  background: transparent !important;
+}
+
+.home-restaurant-chip-white .MuiChip-label {
+  color: #fff !important;
+}
+
+.home-restaurant-cuisine-white {
+  color: #fff !important;
 } 

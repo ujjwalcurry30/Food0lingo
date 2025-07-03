@@ -95,7 +95,7 @@ const Cart = () => {
                     >
                       <RemoveIcon />
                     </IconButton>
-                    <Typography style={{ margin: '0 16px' }}>{item.quantity}</Typography>
+                    <Typography className="cart-item-qty-value">{item.quantity}</Typography>
                     <IconButton
                       size="small"
                       onClick={() => handleQuantityChange(item, 1)}
@@ -114,19 +114,19 @@ const Cart = () => {
               <Grid item xs={6}>
                 <Typography>Subtotal</Typography>
               </Grid>
-              <Grid item xs={6} style={{ textAlign: 'right' }}>
+              <Grid item xs={6} className="cart-summary-align-right">
                 <Typography>₹{total}</Typography>
               </Grid>
               <Grid item xs={6}>
                 <Typography>Delivery Charge</Typography>
               </Grid>
-              <Grid item xs={6} style={{ textAlign: 'right' }}>
+              <Grid item xs={6} className="cart-summary-align-right">
                 <Typography>₹{deliveryCharge}</Typography>
               </Grid>
               <Grid item xs={6}>
                 <Typography>GST (18%)</Typography>
               </Grid>
-              <Grid item xs={6} style={{ textAlign: 'right' }}>
+              <Grid item xs={6} className="cart-summary-align-right">
                 <Typography>₹{gst}</Typography>
               </Grid>
               {firstOrderDiscount > 0 && (
@@ -134,7 +134,7 @@ const Cart = () => {
                   <Grid item xs={6}>
                     <Typography color="success.main">First Order Discount</Typography>
                   </Grid>
-                  <Grid item xs={6} style={{ textAlign: 'right' }}>
+                  <Grid item xs={6} className="cart-summary-align-right">
                     <Typography color="success.main">-₹{firstOrderDiscount}</Typography>
                   </Grid>
                 </>
@@ -145,7 +145,7 @@ const Cart = () => {
               <Grid item xs={6}>
                 <Typography variant="h6">Total</Typography>
               </Grid>
-              <Grid item xs={6} style={{ textAlign: 'right' }}>
+              <Grid item xs={6} className="cart-summary-align-right">
                 <Typography variant="h6">
                   ₹{total + deliveryCharge + gst - firstOrderDiscount}
                 </Typography>
