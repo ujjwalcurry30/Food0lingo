@@ -33,65 +33,14 @@ import {
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setUserLocation, setSelectedRestaurant } from '../redux/slices/restaurantSlice';
-import styled from 'styled-components';
+import './Home.css';
 
-const SearchSection = styled.div`
-  background: #fff;
-  padding: 1rem 0;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  position: sticky;
-  top: 0;
-  z-index: 100;
-`;
-
-const SearchBar = styled(TextField)`
-  background: #f1f1f1;
-  border-radius: 8px;
-  & .MuiOutlinedInput-root {
-    border-radius: 8px;
-  }
-`;
-
-const RestaurantCard = styled(Card)`
-  height: 100%;
-  cursor: pointer;
-  transition: transform 0.3s;
-  border-radius: 12px;
-  &:hover {
-    transform: translateY(-5px);
-  }
-`;
-
-const RestaurantImage = styled(CardMedia)`
-  height: 200px;
-  object-fit: cover;
-`;
-
-const QuickLinks = styled(Box)`
-  display: flex;
-  gap: 1rem;
-  overflow-x: auto;
-  padding: 1rem 0;
-  &::-webkit-scrollbar {
-    display: none;
-  }
-`;
-
-const QuickLinkItem = styled(Paper)`
-  padding: 1rem;
-  min-width: 120px;
-  text-align: center;
-  cursor: pointer;
-  border-radius: 12px;
-  &:hover {
-    background: #f5f5f5;
-  }
-`;
-
-const FilterChip = styled(Chip)`
-  margin: 0.5rem;
-  border-radius: 20px;
-`;
+const QUICK_LINKS = [
+  { key: 'delivery', label: 'Delivery', icon: <DeliveryIcon color="primary" /> },
+  { key: 'diningOut', label: 'Dining Out', icon: <RestaurantIcon color="primary" /> },
+  { key: 'offers', label: 'Offers', icon: <OfferIcon color="primary" /> },
+  { key: 'is247', label: '24/7', icon: <TimeIcon color="primary" /> },
+];
 
 const Home = () => {
   const navigate = useNavigate();
@@ -99,6 +48,7 @@ const Home = () => {
   const { restaurants, dailyOffers, bestsellers, categories } = useSelector((state) => state.restaurants);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedFilters, setSelectedFilters] = useState([]);
+  const [selectedQuickLink, setSelectedQuickLink] = useState('all');
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -132,18 +82,28 @@ const Home = () => {
     "More than ₹600"
   ];
 
+  const filteredRestaurants = React.useMemo(() => {
+    if (selectedQuickLink === 'all') return restaurants;
+    if (selectedQuickLink === 'delivery') return restaurants.filter(r => r.isDelivery);
+    if (selectedQuickLink === 'diningOut') return restaurants.filter(r => r.isDiningOut);
+    if (selectedQuickLink === 'offers') return restaurants.filter(r => r.hasOffer);
+    if (selectedQuickLink === 'is247') return restaurants.filter(r => r.is247);
+    return restaurants;
+  }, [restaurants, selectedQuickLink]);
+
   return (
     <div>
-      <SearchSection>
+      <div className="home-search-section">
         <Container>
           <Grid container spacing={2} alignItems="center">
             <Grid item xs={12} md={6}>
-              <SearchBar
+              <TextField
                 fullWidth
                 placeholder="Search for restaurants and food"
                 variant="outlined"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
+                className="home-search-bar"
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
@@ -154,7 +114,7 @@ const Home = () => {
               />
             </Grid>
             <Grid item xs={12} md={6}>
-              <Box display="flex" gap={2}>
+              <div style={{ display: 'flex', gap: '16px' }}>
                 <Button
                   variant="outlined"
                   startIcon={<LocationIcon />}
@@ -168,39 +128,34 @@ const Home = () => {
                 >
                   Filters
                 </Button>
-              </Box>
+              </div>
             </Grid>
           </Grid>
         </Container>
-      </SearchSection>
+      </div>
 
-      <Container sx={{ py: 4 }}>
+      <Container>
         {/* Quick Links */}
-        <QuickLinks>
-          <QuickLinkItem>
-            <DeliveryIcon color="primary" />
-            <Typography variant="body2">Delivery</Typography>
-          </QuickLinkItem>
-          <QuickLinkItem>
-            <RestaurantIcon color="primary" />
-            <Typography variant="body2">Dining Out</Typography>
-          </QuickLinkItem>
-          <QuickLinkItem>
-            <OfferIcon color="primary" />
-            <Typography variant="body2">Offers</Typography>
-          </QuickLinkItem>
-          <QuickLinkItem>
-            <TimeIcon color="primary" />
-            <Typography variant="body2">24/7</Typography>
-          </QuickLinkItem>
-        </QuickLinks>
+        <div className="home-quick-links">
+          {QUICK_LINKS.map(link => (
+            <div
+              key={link.key}
+              className={`home-quick-link-item${selectedQuickLink === link.key ? ' active' : ''}`}
+              onClick={() => setSelectedQuickLink(link.key)}
+              style={{ border: selectedQuickLink === link.key ? '2px solid #1976d2' : undefined }}
+            >
+              {link.icon}
+              <Typography variant="body2">{link.label}</Typography>
+            </div>
+          ))}
+        </div>
 
         {/* Filters */}
-        <Box sx={{ my: 3, display: 'flex', alignItems: 'center', gap: 2 }}>
+        <div className="home-filters-box">
           <Typography variant="h6">Filters</Typography>
-          <Box sx={{ display: 'flex', gap: 1, overflowX: 'auto', flex: 1 }}>
+          <div style={{ display: 'flex', gap: '8px', overflowX: 'auto', flex: 1 }}>
             {filters.map((filter) => (
-              <FilterChip
+              <Chip
                 key={filter}
                 label={filter}
                 onClick={() => {
@@ -212,90 +167,67 @@ const Home = () => {
                 }}
                 color={selectedFilters.includes(filter) ? 'primary' : 'default'}
                 variant={selectedFilters.includes(filter) ? 'filled' : 'outlined'}
+                className="home-filter-chip"
               />
             ))}
-          </Box>
+          </div>
           <Button
             variant="outlined"
             startIcon={<SortIcon />}
           >
             Sort
           </Button>
-        </Box>
+        </div>
 
-        <Divider sx={{ my: 3 }} />
+        <Divider />
 
         {/* Restaurants Section */}
-        <Box sx={{ my: 4 }}>
+        <div className="home-restaurants-section">
           <Typography variant="h5" component="h2" gutterBottom>
             Restaurants Near You
           </Typography>
           <Grid container spacing={3}>
-            {restaurants.map((restaurant) => (
+            {filteredRestaurants.map((restaurant) => (
               <Grid item xs={12} sm={6} md={4} key={restaurant.id}>
-                <RestaurantCard onClick={() => handleRestaurantClick(restaurant)}>
-                  <Box sx={{ position: 'relative' }}>
-                    <RestaurantImage
+                <Card className="home-restaurant-card" onClick={() => handleRestaurantClick(restaurant)}>
+                  <div style={{ position: 'relative' }}>
+                    <CardMedia
                       component="img"
                       image={restaurant.image}
                       alt={restaurant.name}
+                      className="home-restaurant-image"
                     />
-                    <Box sx={{ 
-                      position: 'absolute', 
-                      top: 10, 
-                      right: 10,
-                      display: 'flex',
-                      gap: 1
-                    }}>
+                    <div style={{ position: 'absolute', top: 10, right: 10, display: 'flex', gap: '8px' }}>
                       <IconButton
                         size="small"
-                        sx={{ 
-                          bgcolor: 'white',
-                          '&:hover': { bgcolor: 'white' }
-                        }}
+                        style={{ background: 'white' }}
                       >
                         <FavoriteBorderIcon />
                       </IconButton>
-                    </Box>
-                    <Box sx={{ 
-                      position: 'absolute', 
-                      bottom: 0, 
-                      left: 0, 
-                      right: 0,
-                      background: 'linear-gradient(transparent, rgba(0,0,0,0.7))',
-                      color: 'white',
-                      p: 1
-                    }}>
+                    </div>
+                    <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, background: 'linear-gradient(transparent, rgba(0,0,0,0.7))', color: 'white', padding: '8px' }}>
                       <Typography variant="subtitle2">
                         {restaurant.deliveryTime} • {restaurant.distance} km
                       </Typography>
-                    </Box>
-                  </Box>
+                    </div>
+                  </div>
                   <CardContent>
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 1 }}>
-                      <Box>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '8px' }}>
+                      <div>
                         <Typography variant="h6" component="h2">
                           {restaurant.name}
                         </Typography>
                         <Typography variant="body2" color="text.secondary">
                           {restaurant.cuisine}
                         </Typography>
-                      </Box>
-                      <Box sx={{ 
-                        display: 'flex', 
-                        alignItems: 'center', 
-                        bgcolor: '#48c479', 
-                        color: 'white', 
-                        px: 1, 
-                        py: 0.5, 
-                        borderRadius: 1 
-                      }}>
+                      </div>
+                      <div className="home-restaurant-rating-box">
                         <Typography variant="body2">
                           {restaurant.rating} ★
                         </Typography>
-                      </Box>
-                    </Box>
-                    <Box sx={{ mt: 1, display: 'flex', gap: 1 }}>
+                      </div>
+                    </div>
+                    <div style={{ marginTop: '8px', display: 'flex', gap: '8px' }}>
                       <Chip
                         label={`${restaurant.menu.length} items`}
                         size="small"
@@ -306,13 +238,13 @@ const Home = () => {
                         size="small"
                         variant="outlined"
                       />
-                    </Box>
+                    </div>
                   </CardContent>
-                </RestaurantCard>
+                </Card>
               </Grid>
             ))}
           </Grid>
-        </Box>
+        </div>
       </Container>
     </div>
   );

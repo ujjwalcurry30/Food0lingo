@@ -10,6 +10,10 @@ const initialState = {
       deliveryTime: "30-35 min",
       distance: 2.5,
       image: "https://images.unsplash.com/photo-1585937421612-70a008356fbe?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+      isDiningOut: false,
+      hasOffer: true,
+      is247: true,
+      isDelivery: true,
       menu: [
         {
           id: 1,
@@ -161,6 +165,10 @@ const initialState = {
       deliveryTime: "25-30 min",
       distance: 1.8,
       image: "https://images.unsplash.com/photo-1551183053-bf91a1d81141?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+      isDiningOut: true,
+      hasOffer: true,
+      is247: true,
+      isDelivery: true,
       menu: [
         {
           id: 1,
@@ -310,6 +318,10 @@ const initialState = {
       deliveryTime: "35-40 min",
       distance: 3.2,
       image: "https://images.unsplash.com/photo-1563245372-f21724e3856d?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+      isDiningOut: true,
+      hasOffer: true,
+      is247: true,
+      isDelivery: true,
       menu: [
         {
           id: 1,
@@ -458,6 +470,10 @@ const initialState = {
       deliveryTime: "30-35 min",
       distance: 2.1,
       image: "https://images.unsplash.com/photo-1579871494447-9811cf80d66c?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+      isDiningOut: true,
+      hasOffer: true,
+      is247: true,
+      isDelivery: true,
       menu: [
         {
           id: 1,
@@ -606,6 +622,10 @@ const initialState = {
       deliveryTime: "20-25 min",
       distance: 1.2,
       image: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80",
+      isDiningOut: true,
+      hasOffer: true,
+      is247: true,
+      isDelivery: true,
       menu: [
         {
           id: 1,
@@ -753,6 +773,10 @@ const initialState = {
       deliveryTime: "40-45 min",
       distance: 4.0,
       image: "https://images.unsplash.com/photo-1502741338009-cac2772e18bc?auto=format&fit=crop&w=800&q=80",
+      isDiningOut: true,
+      hasOffer: true,
+      is247: true,
+      isDelivery: true,
       menu: [
         {
           id: 1,
@@ -900,6 +924,10 @@ const initialState = {
       deliveryTime: "25-30 min",
       distance: 2.0,
       image: "https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=800&q=80",
+      isDiningOut: true,
+      hasOffer: true,
+      is247: true,
+      isDelivery: true,
       menu: [
         {
           id: 1,
@@ -1047,6 +1075,10 @@ const initialState = {
       deliveryTime: "30-35 min",
       distance: 2.7,
       image: "https://images.unsplash.com/photo-1464306076886-debca5e8a6b0?auto=format&fit=crop&w=800&q=80",
+      isDiningOut: true,
+      hasOffer: true,
+      is247: true,
+      isDelivery: true,
       menu: [
         {
           id: 1,
@@ -1194,6 +1226,10 @@ const initialState = {
       deliveryTime: "35-40 min",
       distance: 3.5,
       image: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80",
+      isDiningOut: true,
+      hasOffer: true,
+      is247: true,
+      isDelivery: true,
       menu: [
         {
           id: 1,
@@ -1341,6 +1377,10 @@ const initialState = {
       deliveryTime: "20-25 min",
       distance: 1.5,
       image: "https://images.unsplash.com/photo-1502741338009-cac2772e18bc?auto=format&fit=crop&w=800&q=80",
+      isDiningOut: true,
+      hasOffer: true,
+      is247: true,
+      isDelivery: true,
       menu: [
         {
           id: 1,
@@ -1488,6 +1528,10 @@ const initialState = {
       deliveryTime: "30-35 min",
       distance: 2.3,
       image: "https://images.unsplash.com/photo-1464306076886-debca5e8a6b0?auto=format&fit=crop&w=800&q=80",
+      isDiningOut: true,
+      hasOffer: true,
+      is247: true,
+      isDelivery: true,
       menu: [
         {
           id: 1,
@@ -1635,6 +1679,10 @@ const initialState = {
       deliveryTime: "25-30 min",
       distance: 1.9,
       image: "https://images.unsplash.com/photo-1551183053-bf91a1d81141?auto=format&fit=crop&w=800&q=80",
+      isDiningOut: true,
+      hasOffer: true,
+      is247: true,
+      isDelivery: true,
       menu: [
         {
           id: 1,
@@ -1782,6 +1830,10 @@ const initialState = {
       deliveryTime: "20-25 min",
       distance: 1.1,
       image: "https://images.unsplash.com/photo-1464306076886-debca5e8a6b0?auto=format&fit=crop&w=800&q=80",
+      isDiningOut: true,
+      hasOffer: true,
+      is247: true,
+      isDelivery: true,
       menu: [
         {
           id: 1,
@@ -1929,6 +1981,10 @@ const initialState = {
       deliveryTime: "35-40 min",
       distance: 3.8,
       image: "https://images.unsplash.com/photo-1519864600265-abb23847ef2c?auto=format&fit=crop&w=800&q=80",
+      isDiningOut: true,
+      hasOffer: true,
+      is247: true,
+      isDelivery: true,
       menu: [
         {
           id: 1,
@@ -2076,6 +2132,10 @@ const initialState = {
       deliveryTime: "30-35 min",
       distance: 2.6,
       image: "https://images.unsplash.com/photo-1464306076886-debca5e8a6b0?auto=format&fit=crop&w=800&q=80",
+      isDiningOut: true,
+      hasOffer: true,
+      is247: true,
+      isDelivery: true,
       menu: [
         {
           id: 1,
@@ -2223,6 +2283,10 @@ const initialState = {
       deliveryTime: "20-25 min",
       distance: 1.7,
       image: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80",
+      isDiningOut: true,
+      hasOffer: true,
+      is247: true,
+      isDelivery: true,
       menu: [
         {
           id: 1,
@@ -2370,6 +2434,10 @@ const initialState = {
       deliveryTime: "35-40 min",
       distance: 3.0,
       image: "https://images.unsplash.com/photo-1519864600265-abb23847ef2c?auto=format&fit=crop&w=800&q=80",
+      isDiningOut: true,
+      hasOffer: true,
+      is247: true,
+      isDelivery: true,
       menu: [
         {
           id: 1,
@@ -2517,6 +2585,10 @@ const initialState = {
       deliveryTime: "15-20 min",
       distance: 0.9,
       image: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80",
+      isDiningOut: true,
+      hasOffer: true,
+      is247: true,
+      isDelivery: true,
       menu: [
         {
           id: 1,
@@ -2664,6 +2736,10 @@ const initialState = {
       deliveryTime: "30-35 min",
       distance: 2.8,
       image: "https://images.unsplash.com/photo-1519864600265-abb23847ef2c?auto=format&fit=crop&w=800&q=80",
+      isDiningOut: true,
+      hasOffer: true,
+      is247: true,
+      isDelivery: true,
       menu: [
         {
           id: 1,
@@ -2811,6 +2887,10 @@ const initialState = {
       deliveryTime: "20-25 min",
       distance: 1.6,
       image: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80",
+      isDiningOut: true,
+      hasOffer: true,
+      is247: true,
+      isDelivery: true,
       menu: [
         {
           id: 1,
@@ -2958,6 +3038,10 @@ const initialState = {
       deliveryTime: "30-35 min",
       distance: 2.2,
       image: "https://images.unsplash.com/photo-1579871494447-9811cf80d66c?auto=format&fit=crop&w=800&q=80",
+      isDiningOut: true,
+      hasOffer: true,
+      is247: true,
+      isDelivery: true,
       menu: [
         {
           id: 1,
@@ -3105,6 +3189,10 @@ const initialState = {
       deliveryTime: "20-25 min",
       distance: 1.3,
       image: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80",
+      isDiningOut: true,
+      hasOffer: true,
+      is247: true,
+      isDelivery: true,
       menu: [
         {
           id: 1,
@@ -3252,6 +3340,10 @@ const initialState = {
       deliveryTime: "25-30 min",
       distance: 2.4,
       image: "https://images.unsplash.com/photo-1519864600265-abb23847ef2c?auto=format&fit=crop&w=800&q=80",
+      isDiningOut: true,
+      hasOffer: true,
+      is247: true,
+      isDelivery: true,
       menu: [
         {
           id: 1,
@@ -3741,6 +3833,10 @@ const initialState = {
       deliveryTime: "20-25 min",
       distance: 1.5,
       image: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80",
+      isDiningOut: true,
+      hasOffer: true,
+      is247: true,
+      isDelivery: true,
       menu: [
         {
           id: 1,
@@ -3888,6 +3984,10 @@ const initialState = {
       deliveryTime: "15-20 min",
       distance: 1.0,
       image: "https://images.unsplash.com/photo-1464306076886-debca5e8a6b0?auto=format&fit=crop&w=800&q=80",
+      isDiningOut: true,
+      hasOffer: true,
+      is247: true,
+      isDelivery: true,
       menu: [
         {
           id: 1,
@@ -4035,6 +4135,10 @@ const initialState = {
       deliveryTime: "20-25 min",
       distance: 1.4,
       image: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80",
+      isDiningOut: true,
+      hasOffer: true,
+      is247: true,
+      isDelivery: true,
       menu: [
         {
           id: 1,
@@ -4182,6 +4286,10 @@ const initialState = {
       deliveryTime: "20-25 min",
       distance: 1.7,
       image: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80",
+      isDiningOut: true,
+      hasOffer: true,
+      is247: true,
+      isDelivery: true,
       menu: [
         {
           id: 1,
@@ -4212,6 +4320,10 @@ const initialState = {
       deliveryTime: "15-20 min",
       distance: 1.2,
       image: "https://images.unsplash.com/photo-1464306076886-debca5e8a6b0?auto=format&fit=crop&w=800&q=80",
+      isDiningOut: true,
+      hasOffer: true,
+      is247: true,
+      isDelivery: true,
       menu: [
         {
           id: 1,
@@ -4242,6 +4354,10 @@ const initialState = {
       deliveryTime: "20-25 min",
       distance: 1.0,
       image: "https://images.unsplash.com/photo-1464306076886-debca5e8a6b0?auto=format&fit=crop&w=800&q=80",
+      isDiningOut: true,
+      hasOffer: true,
+      is247: true,
+      isDelivery: true,
       menu: [
         {
           id: 1,
@@ -4272,6 +4388,10 @@ const initialState = {
       deliveryTime: "25-30 min",
       distance: 2.1,
       image: "https://images.unsplash.com/photo-1464306076886-debca5e8a6b0?auto=format&fit=crop&w=800&q=80",
+      isDiningOut: true,
+      hasOffer: true,
+      is247: true,
+      isDelivery: true,
       menu: [
         {
           id: 1,

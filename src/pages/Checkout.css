@@ -1,0 +1,41 @@
+
+
+.checkout-centered-container {
+  min-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.checkout-card {
+  max-width: 1000px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.checkout-alert {
+  margin-bottom: 32px;
+}
+
+.checkout-btn {
+  margin-top: 16px;
+}
+
+.checkout-form-card {
+  margin-bottom: 32px;
+}
+
+.checkout-summary-box {
+  margin-top: 24px;
+}
+
+.checkout-summary-divider {
+  margin: 16px 0;
+}
+
+.checkout-actions {
+  margin-top: 32px;
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+} 

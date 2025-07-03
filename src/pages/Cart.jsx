@@ -14,20 +14,7 @@ import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { removeFromCart, updateQuantity } from '../redux/slices/cartSlice';
 import { Add as AddIcon, Remove as RemoveIcon, Delete as DeleteIcon } from '@mui/icons-material';
-import styled from 'styled-components';
-
-const CenteredContainer = styled(Container)`
-  min-height: 80vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-`;
-
-const CartCard = styled(Card)`
-  max-width: 800px;
-  margin: 0 auto;
-  width: 100%;
-`;
+import './Cart.css';
 
 const Cart = () => {
   const navigate = useNavigate();
@@ -47,8 +34,8 @@ const Cart = () => {
 
   if (items.length === 0) {
     return (
-      <CenteredContainer>
-        <Box textAlign="center">
+      <Container>
+        <div className="cart-empty-box">
           <Typography variant="h5" gutterBottom>
             Your cart is empty
           </Typography>
@@ -56,90 +43,90 @@ const Cart = () => {
             variant="contained"
             color="primary"
             onClick={() => navigate('/')}
-            sx={{ mt: 2 }}
+            className="cart-empty-btn"
           >
             Continue Shopping
           </Button>
-        </Box>
-      </CenteredContainer>
+        </div>
+      </Container>
     );
   }
 
   return (
-    <CenteredContainer>
-      <CartCard>
+    <Container>
+      <Card>
         <CardContent>
           <Typography variant="h5" gutterBottom align="center">
             Your Cart
           </Typography>
           
           {items.map((item) => (
-            <Box key={item.id} sx={{ mb: 3 }}>
+            <div key={item.id} className="cart-item-box">
               <Grid container spacing={2} alignItems="center">
                 <Grid item xs={12} sm={4}>
                   <img
                     src={item.image}
                     alt={item.name}
-                    style={{ width: '100%', height: '120px', objectFit: 'cover', borderRadius: '8px' }}
+                    className="cart-item-img"
                   />
                 </Grid>
                 <Grid item xs={12} sm={8}>
-                  <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                    <Box>
+                  <div className="cart-item-details">
+                    <div>
                       <Typography variant="h6">{item.name}</Typography>
                       <Typography variant="body2" color="text.secondary">
                         {item.restaurantName}
                       </Typography>
-                      <Typography variant="h6" color="primary" sx={{ mt: 1 }}>
+                      <Typography variant="h6" color="primary" className="cart-summary-total">
                         ₹{item.price}
                       </Typography>
-                    </Box>
+                    </div>
                     <IconButton
                       color="error"
                       onClick={() => handleRemoveItem(item.id)}
                     >
                       <DeleteIcon />
                     </IconButton>
-                  </Box>
-                  <Box sx={{ display: 'flex', alignItems: 'center', mt: 2 }}>
+                  </div>
+                  <div className="cart-item-qty-box">
                     <IconButton
                       size="small"
                       onClick={() => handleQuantityChange(item, -1)}
                     >
                       <RemoveIcon />
                     </IconButton>
-                    <Typography sx={{ mx: 2 }}>{item.quantity}</Typography>
+                    <Typography style={{ margin: '0 16px' }}>{item.quantity}</Typography>
                     <IconButton
                       size="small"
                       onClick={() => handleQuantityChange(item, 1)}
                     >
                       <AddIcon />
                     </IconButton>
-                  </Box>
+                  </div>
                 </Grid>
               </Grid>
-              <Divider sx={{ mt: 2 }} />
-            </Box>
+              <Divider className="cart-summary-divider" />
+            </div>
           ))}
 
-          <Box sx={{ mt: 3 }}>
+          <div className="cart-summary-box">
             <Grid container spacing={2}>
               <Grid item xs={6}>
                 <Typography>Subtotal</Typography>
               </Grid>
-              <Grid item xs={6} textAlign="right">
+              <Grid item xs={6} style={{ textAlign: 'right' }}>
                 <Typography>₹{total}</Typography>
               </Grid>
               <Grid item xs={6}>
                 <Typography>Delivery Charge</Typography>
               </Grid>
-              <Grid item xs={6} textAlign="right">
+              <Grid item xs={6} style={{ textAlign: 'right' }}>
                 <Typography>₹{deliveryCharge}</Typography>
               </Grid>
               <Grid item xs={6}>
                 <Typography>GST (18%)</Typography>
               </Grid>
-              <Grid item xs={6} textAlign="right">
+              <Grid item xs={6} style={{ textAlign: 'right' }}>
                 <Typography>₹{gst}</Typography>
               </Grid>
               {firstOrderDiscount > 0 && (
@@ -147,26 +134,26 @@ const Cart = () => {
                   <Grid item xs={6}>
                     <Typography color="success.main">First Order Discount</Typography>
                   </Grid>
-                  <Grid item xs={6} textAlign="right">
+                  <Grid item xs={6} style={{ textAlign: 'right' }}>
                     <Typography color="success.main">-₹{firstOrderDiscount}</Typography>
                   </Grid>
                 </>
               )}
               <Grid item xs={12}>
-                <Divider sx={{ my: 2 }} />
+                <Divider className="cart-summary-divider" />
               </Grid>
               <Grid item xs={6}>
                 <Typography variant="h6">Total</Typography>
               </Grid>
-              <Grid item xs={6} textAlign="right">
+              <Grid item xs={6} style={{ textAlign: 'right' }}>
                 <Typography variant="h6">
                   ₹{total + deliveryCharge + gst - firstOrderDiscount}
                 </Typography>
               </Grid>
             </Grid>
-          </Box>
+          </div>
 
-          <Box sx={{ mt: 4, display: 'flex', gap: 2, justifyContent: 'center' }}>
+          <div className="cart-actions">
             <Button
               variant="outlined"
               onClick={() => navigate('/')}
@@ -180,10 +167,10 @@ const Cart = () => {
             >
               Proceed to Checkout
             </Button>
-          </Box>
+          </div>
         </CardContent>
-      </CartCard>
-    </CenteredContainer>
+      </Card>
+    </Container>
   );
 };
 

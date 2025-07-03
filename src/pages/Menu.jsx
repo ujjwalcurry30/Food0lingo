@@ -17,30 +17,10 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart } from '../redux/slices/cartSlice';
 import { updateItemPopularity } from '../redux/slices/restaurantSlice';
-import styled from 'styled-components';
-
-const MenuItemCard = styled(Card)`
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  transition: transform 0.3s;
-  &:hover {
-    transform: translateY(-5px);
-  }
-`;
-
-const MenuItemImage = styled(CardMedia)`
-  height: 200px;
-  object-fit: cover;
-`;
-
-const PopularityBadge = styled(Chip)`
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background-color: rgba(0, 0, 0, 0.7);
-  color: white;
-`;
+import './Menu.css';
+import TextField from '@mui/material/TextField';
+import InputAdornment from '@mui/material/InputAdornment';
+import SearchIcon from '@mui/icons-material/Search';
 
 const Menu = () => {
   const navigate = useNavigate();
@@ -48,6 +28,9 @@ const Menu = () => {
   const dispatch = useDispatch();
   const selectedRestaurant = useSelector((state) => state.restaurants.selectedRestaurant);
   const [selectedCategory, setSelectedCategory] = useState('All');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [suggestions, setSuggestions] = useState([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
 
   useEffect(() => {
     if (location.state?.category) {
@@ -57,27 +40,29 @@ const Menu = () => {
 
   if (!selectedRestaurant) {
     return (
-      <Container sx={{ py: 4, textAlign: 'center' }}>
-        <Typography variant="h5" gutterBottom>
-          Please select a restaurant first
-        </Typography>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => navigate('/')}
-          sx={{ mt: 2 }}
-        >
-          Go to Home
-        </Button>
+      <Container>
+        <div style={{ padding: '32px 0', textAlign: 'center' }}>
+          <Typography variant="h5" gutterBottom>
+            Please select a restaurant first
+          </Typography>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => navigate('/')}
+            className="menu-back-btn"
+          >
+            Go to Home
+          </Button>
+        </div>
       </Container>
     );
   }
 
   const categories = ['All', ...new Set(selectedRestaurant.menu.map(item => item.category))];
 
-  const filteredMenu = selectedCategory === 'All'
-    ? selectedRestaurant.menu
-    : selectedRestaurant.menu.filter(item => item.category === selectedCategory);
+  const filteredMenu = searchQuery.trim() === ''
+    ? (selectedCategory === 'All' ? selectedRestaurant.menu : selectedRestaurant.menu.filter(item => item.category === selectedCategory))
+    : selectedRestaurant.menu.filter(item => item.name.toLowerCase().includes(searchQuery.toLowerCase()));
 
   const handleAddToCart = (item) => {
     dispatch(addToCart({
@@ -92,29 +77,28 @@ const Menu = () => {
   };
 
   return (
-    <Container sx={{ py: 4 }}>
+    <Container>
       {/* Restaurant Info */}
-      <Paper elevation={3} sx={{ p: 3, mb: 4 }}>
+      <Paper elevation={3} className="menu-restaurant-info">
         <Grid container spacing={3} alignItems="center">
           <Grid item xs={12} md={3}>
             <CardMedia
               component="img"
-              height="200"
               image={selectedRestaurant.image}
               alt={selectedRestaurant.name}
-              sx={{ borderRadius: 2 }}
+              className="menu-restaurant-image"
             />
           </Grid>
           <Grid item xs={12} md={9}>
             <Typography variant="h4" gutterBottom>
               {selectedRestaurant.name}
             </Typography>
-            <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+            <div className="menu-restaurant-rating-box">
               <Rating value={selectedRestaurant.rating} precision={0.5} readOnly />
-              <Typography variant="body2" sx={{ ml: 1 }}>
+              <Typography variant="body2" style={{ marginLeft: '8px' }}>
                 ({selectedRestaurant.rating})
               </Typography>
-            </Box>
+            </div>
             <Typography variant="body1" color="text.secondary" gutterBottom>
               {selectedRestaurant.cuisine} • {selectedRestaurant.deliveryTime}
             </Typography>
@@ -125,34 +109,91 @@ const Menu = () => {
         </Grid>
       </Paper>
 
+      {/* Search Bar with Suggestions */}
+      <div style={{ margin: '24px 0', position: 'relative', maxWidth: 400 }}>
+        <TextField
+          fullWidth
+          placeholder="Search for food items"
+          variant="outlined"
+          value={searchQuery}
+          onChange={(e) => {
+            const value = e.target.value;
+            setSearchQuery(value);
+            if (value.trim() === '') {
+              setSuggestions([]);
+              setShowSuggestions(false);
+            } else {
+              const matches = selectedRestaurant.menu.filter(item =>
+                item.name.toLowerCase().includes(value.toLowerCase())
+              );
+              setSuggestions(matches);
+              setShowSuggestions(true);
+            }
+          }}
+          onFocus={() => {
+            if (suggestions.length > 0) setShowSuggestions(true);
+          }}
+          onBlur={() => {
+            setTimeout(() => setShowSuggestions(false), 100); // Delay to allow click
+          }}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <SearchIcon />
+              </InputAdornment>
+            ),
+          }}
+        />
+        {showSuggestions && suggestions.length > 0 && (
+          <Paper elevation={3} style={{ position: 'absolute', width: '100%', zIndex: 10, maxHeight: 200, overflowY: 'auto' }}>
+            {suggestions.map((item) => (
+              <Box
+                key={item.id}
+                sx={{ p: 1, cursor: 'pointer', '&:hover': { background: '#f0f0f0' } }}
+                onMouseDown={() => {
+                  setSearchQuery(item.name);
+                  setShowSuggestions(false);
+                  setSelectedCategory('All');
+                  // Optionally scroll to or filter for this item
+                }}
+              >
+                {item.name}
+              </Box>
+            ))}
+          </Paper>
+        )}
+      </div>
+
       {/* Category Tabs */}
-      <Box sx={{ mb: 4, display: 'flex', gap: 1, overflowX: 'auto', pb: 1 }}>
+      <div className="menu-category-tabs">
         {categories.map((category) => (
           <Chip
             key={category}
             label={category}
             onClick={() => setSelectedCategory(category)}
             color={selectedCategory === category ? 'primary' : 'default'}
-            sx={{ minWidth: '100px' }}
+            className="menu-category-chip"
           />
         ))}
-      </Box>
+      </div>
 
       {/* Menu Items */}
       <Grid container spacing={3}>
         {filteredMenu.map((item) => (
           <Grid item xs={12} sm={6} md={4} key={item.id}>
-            <MenuItemCard>
-              <Box sx={{ position: 'relative' }}>
-                <MenuItemImage
+            <Card className="menu-item-card">
+              <div style={{ position: 'relative' }}>
+                <CardMedia
                   component="img"
                   image={item.image}
                   alt={item.name}
+                  className="menu-item-image"
                 />
                 {item.popularity > 50 && (
-                  <PopularityBadge
+                  <Chip
                     label={`${item.popularity} orders`}
                     size="small"
+                    className="menu-popularity-badge"
                   />
                 )}
                 {item.isBestseller && (
@@ -160,22 +201,18 @@ const Menu = () => {
                     label="Bestseller"
                     color="primary"
                     size="small"
-                    sx={{
-                      position: 'absolute',
-                      top: 10,
-                      left: 10,
-                    }}
+                    className="menu-bestseller-chip"
                   />
                 )}
-              </Box>
-              <CardContent sx={{ flexGrow: 1 }}>
+              </div>
+              <CardContent>
                 <Typography variant="h6" gutterBottom>
                   {item.name}
                 </Typography>
                 <Typography variant="body2" color="text.secondary" paragraph>
                   {item.description}
                 </Typography>
-                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mt: 'auto' }}>
+                <div className="menu-item-details">
                   <Typography variant="h6" color="primary">
                     ₹{item.price}
                   </Typography>
@@ -186,9 +223,9 @@ const Menu = () => {
                   >
                     Add to Cart
                   </Button>
-                </Box>
+                </div>
               </CardContent>
-            </MenuItemCard>
+            </Card>
           </Grid>
         ))}
       </Grid>

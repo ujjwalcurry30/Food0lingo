@@ -19,27 +19,8 @@ import {
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { clearCart, setFirstOrder } from '../redux/slices/cartSlice';
-import styled from 'styled-components';
+import './Checkout.css';
 import UPIPayment from '../components/UPIPayment';
-
-const CenteredContainer = styled(Container)`
-  min-height: 80vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-`;
-
-const CheckoutCard = styled(Card)`
-  max-width: 1000px;
-  margin: 0 auto;
-  width: 100%;
-`;
-
-const PaymentMethod = styled(Card)`
-  margin-bottom: 1rem;
-  cursor: pointer;
-  border: 2px solid ${props => props.selected ? '#FF4B2B' : 'transparent'};
-`;
 
 const Checkout = () => {
   const navigate = useNavigate();
@@ -89,7 +70,8 @@ const Checkout = () => {
     if (paymentMethod === 'upi') {
       setUpiDialogOpen(true);
     } else {
-      console.log('Other payment method selected:', paymentMethod);
+      dispatch(clearCart());
+      navigate('/order-complete');
     }
   };
 
@@ -100,33 +82,33 @@ const Checkout = () => {
 
   if (orderPlaced) {
     return (
-      <CenteredContainer>
-        <Box textAlign="center">
-          <Alert severity="success" sx={{ mb: 4 }}>
+      <div className="checkout-centered-container">
+        <div className="checkout-alert">
+          <Alert severity="success">
             Your order has been placed successfully!
           </Alert>
-          <Typography variant="h5" gutterBottom>
-            Thank you for your order
-          </Typography>
-          <Typography variant="body1" color="text.secondary" paragraph>
-            We'll send you an email confirmation shortly.
-          </Typography>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => navigate('/')}
-            sx={{ mt: 2 }}
-          >
-            Continue Shopping
-          </Button>
-        </Box>
-      </CenteredContainer>
+        </div>
+        <Typography variant="h5" gutterBottom>
+          Thank you for your order
+        </Typography>
+        <Typography variant="body1" color="text.secondary" paragraph>
+          We'll send you an email confirmation shortly.
+        </Typography>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => navigate('/')}
+          className="checkout-btn"
+        >
+          Continue Shopping
+        </Button>
+      </div>
     );
   }
 
   return (
-    <CenteredContainer>
-      <CheckoutCard>
+    <div className="checkout-centered-container">
+      <div className="checkout-card">
         <CardContent>
           <Typography variant="h5" gutterBottom align="center">
             Checkout
@@ -135,7 +117,7 @@ const Checkout = () => {
           <Grid container spacing={4}>
             <Grid item xs={12} md={8}>
               <form onSubmit={handleSubmit}>
-                <Card sx={{ mb: 4 }}>
+                <Card className="checkout-form-card">
                   <CardContent>
                     <Typography variant="h6" gutterBottom>
                       Delivery Information
@@ -206,7 +188,7 @@ const Checkout = () => {
                         value={paymentMethod}
                         onChange={handlePaymentMethodChange}
                       >
-                        <PaymentMethod selected={paymentMethod === 'card'}>
+                        <div>
                           <CardContent>
                             <FormControlLabel
                               value="card"
@@ -249,9 +231,8 @@ const Checkout = () => {
                               </Grid>
                             )}
                           </CardContent>
-                        </PaymentMethod>
-
-                        <PaymentMethod selected={paymentMethod === 'upi'}>
+                        </div>
+                        <div>
                           <CardContent>
                             <FormControlLabel
                               value="upi"
@@ -259,9 +240,8 @@ const Checkout = () => {
                               label="UPI"
                             />
                           </CardContent>
-                        </PaymentMethod>
-
-                        <PaymentMethod selected={paymentMethod === 'cod'}>
+                        </div>
+                        <div>
                           <CardContent>
                             <FormControlLabel
                               value="cod"
@@ -269,7 +249,7 @@ const Checkout = () => {
                               label="Cash on Delivery"
                             />
                           </CardContent>
-                        </PaymentMethod>
+                        </div>
                       </RadioGroup>
                     </FormControl>
                   </CardContent>
@@ -283,7 +263,7 @@ const Checkout = () => {
                   <Typography variant="h6" gutterBottom>
                     Order Summary
                   </Typography>
-                  <Box sx={{ my: 2 }}>
+                  <div className="checkout-summary-box">
                     <Grid container spacing={2}>
                       <Grid item xs={6}>
                         <Typography>Subtotal</Typography>
@@ -314,7 +294,7 @@ const Checkout = () => {
                         </>
                       )}
                       <Grid item xs={12}>
-                        <Divider sx={{ my: 2 }} />
+                        <Divider className="checkout-summary-divider" />
                       </Grid>
                       <Grid item xs={6}>
                         <Typography variant="h6">Total</Typography>
@@ -323,30 +303,31 @@ const Checkout = () => {
                         <Typography variant="h6">₹{finalTotal}</Typography>
                       </Grid>
                     </Grid>
-                  </Box>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    fullWidth
-                    size="large"
-                    onClick={handleProceedToPay}
-                  >
-                    Proceed to Pay
-                  </Button>
+                  </div>
+                  <div className="checkout-actions">
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      fullWidth
+                      size="large"
+                      onClick={handleProceedToPay}
+                    >
+                      Proceed to Pay
+                    </Button>
+                  </div>
                 </CardContent>
               </Card>
             </Grid>
           </Grid>
         </CardContent>
-      </CheckoutCard>
-
+      </div>
       <UPIPayment
         open={upiDialogOpen}
         onClose={() => setUpiDialogOpen(false)}
         amount={finalTotal}
         onPaymentComplete={handlePaymentComplete}
       />
-    </CenteredContainer>
+    </div>
   );
 };
 

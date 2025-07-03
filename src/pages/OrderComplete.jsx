@@ -11,31 +11,13 @@ import {
   Chip,
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
+import './OrderComplete.css';
 import {
   CheckCircle as CheckCircleIcon,
   Restaurant as RestaurantIcon,
   LocalShipping as DeliveryIcon,
   AccessTime as TimeIcon,
 } from '@mui/icons-material';
-
-const CenteredContainer = styled(Container)`
-  min-height: 80vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`;
-
-const OrderCard = styled(Card)`
-  max-width: 800px;
-  width: 100%;
-  margin: 0 auto;
-`;
-
-const StatusChip = styled(Chip)`
-  margin: 0.5rem;
-`;
 
 const OrderComplete = () => {
   const navigate = useNavigate();
@@ -53,13 +35,13 @@ const OrderComplete = () => {
   };
 
   return (
-    <CenteredContainer>
-      <OrderCard>
+    <div className="order-complete-centered-container">
+      <Card className="order-complete-card">
         <CardContent>
-          <Box sx={{ textAlign: 'center', mb: 4 }}>
+          <div className="order-complete-icon-box">
             <CheckCircleIcon 
               color="success" 
-              sx={{ fontSize: 80, mb: 2 }} 
+              style={{ fontSize: 80, marginBottom: 16 }} 
             />
             <Typography variant="h4" gutterBottom>
               Order Confirmed!
@@ -67,26 +49,29 @@ const OrderComplete = () => {
             <Typography variant="body1" color="text.secondary">
               Your order has been received and is being prepared
             </Typography>
-            <Box sx={{ mt: 2 }}>
-              <StatusChip 
+            <div className="order-complete-chips-box">
+              <Chip 
                 icon={<RestaurantIcon />} 
                 label="Restaurant Confirmed" 
                 color="success" 
+                className="order-complete-status-chip"
               />
-              <StatusChip 
+              <Chip 
                 icon={<CheckCircleIcon />} 
                 label="Order Received by Restaurant" 
                 color="success" 
+                className="order-complete-status-chip"
               />
-              <StatusChip 
+              <Chip 
                 icon={<DeliveryIcon />} 
                 label="Preparing Order" 
                 color="primary" 
+                className="order-complete-status-chip"
               />
-            </Box>
-          </Box>
+            </div>
+          </div>
 
-          <Divider sx={{ my: 3 }} />
+          <Divider className="order-complete-divider" />
 
           <Grid container spacing={3}>
             <Grid item xs={12}>
@@ -106,45 +91,38 @@ const OrderComplete = () => {
                 Items Ordered:
               </Typography>
               {orderDetails.items.map((item, index) => (
-                <Box key={index} sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
+                <div key={index} className="order-complete-items-box">
                   <Typography>
                     {item.quantity}x {item.name}
                   </Typography>
                   <Typography>
                     ₹{item.price * item.quantity}
                   </Typography>
-                </Box>
+                </div>
               ))}
-              <Divider sx={{ my: 2 }} />
-              <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+              <Divider className="order-complete-divider" />
+              <div className="order-complete-total-box">
                 <Typography variant="subtitle1">Total Amount</Typography>
                 <Typography variant="subtitle1">₹{orderDetails.total}</Typography>
-              </Box>
+              </div>
             </Grid>
 
             <Grid item xs={12}>
-              <Box sx={{ 
-                display: 'flex', 
-                alignItems: 'center', 
-                gap: 1, 
-                bgcolor: 'primary.light', 
-                p: 2, 
-                borderRadius: 1 
-              }}>
+              <div className="order-complete-delivery-box">
                 <TimeIcon color="primary" />
-                <Box>
+                <div>
                   <Typography variant="subtitle1">
                     Estimated Delivery Time
                   </Typography>
                   <Typography variant="h6" color="primary">
                     {orderDetails.estimatedDelivery}
                   </Typography>
-                </Box>
-              </Box>
+                </div>
+              </div>
             </Grid>
           </Grid>
 
-          <Box sx={{ mt: 4, display: 'flex', gap: 2, justifyContent: 'center' }}>
+          <div className="order-complete-actions">
             <Button
               variant="outlined"
               onClick={() => navigate('/')}
@@ -158,10 +136,10 @@ const OrderComplete = () => {
             >
               Track Order
             </Button>
-          </Box>
+          </div>
         </CardContent>
-      </OrderCard>
-    </CenteredContainer>
+      </Card>
+    </div>
   );
 };
 
