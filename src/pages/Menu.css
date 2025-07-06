@@ -1,80 +1,133 @@
+/* Menu Page Styles */
 .menu-restaurant-info {
-  padding: 24px;
-  margin-bottom: 32px;
+  margin-bottom: 24px;
+  border-radius: 12px;
+  overflow: hidden;
 }
 
 .menu-restaurant-image {
-  border-radius: 16px;
   height: 200px;
   object-fit: cover;
+  border-radius: 8px;
 }
 
 .menu-restaurant-rating-box {
   display: flex;
   align-items: center;
+  gap: 8px;
   margin-bottom: 8px;
 }
 
+.menu-restaurant-rating-value {
+  color: #666;
+  font-weight: 500;
+}
+
+.menu-search-bar-container {
+  position: relative;
+  margin-bottom: 24px;
+}
+
+.menu-suggestions-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  max-height: 200px;
+  overflow-y: auto;
+  border-radius: 0 0 8px 8px;
+}
+
+.menu-suggestion-item {
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.menu-suggestion-item:hover {
+  background-color: #f0f0f0;
+}
+
 .menu-category-tabs {
-  margin-bottom: 32px;
   display: flex;
-  gap: 8px;
+  gap: 12px;
+  margin-bottom: 24px;
   overflow-x: auto;
   padding-bottom: 8px;
 }
 
+.menu-category-chip {
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.menu-category-chip:hover {
+  transform: translateY(-1px);
+}
+
 .menu-item-card {
   height: 100%;
-  display: flex;
-  flex-direction: column;
-  transition: transform 0.3s;
-  border-radius: 12px;
+  transition: all 0.3s ease;
+  border: 1px solid #e0e0e0;
+  overflow: hidden;
 }
 
 .menu-item-card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
 }
 
 .menu-item-image {
   height: 200px;
   object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.menu-item-card:hover .menu-item-image {
+  transform: scale(1.05);
 }
 
 .menu-popularity-badge {
   position: absolute;
-  top: 10px;
-  right: 10px;
-  background-color: rgba(0, 0, 0, 0.7);
+  top: 8px;
+  left: 8px;
+  background: rgba(76, 175, 80, 0.9);
   color: white;
+  font-weight: 600;
 }
 
 .menu-bestseller-chip {
   position: absolute;
-  top: 10px;
-  left: 10px;
+  top: 8px;
+  right: 8px;
+  background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
+  color: white;
+  font-weight: 600;
 }
 
 .menu-item-details {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: auto;
+  margin-top: 16px;
 }
 
-.menu-restaurant-rating-value {
-  margin-left: 8px;
+.menu-back-btn {
+  margin-bottom: 16px;
 }
 
-.menu-search-bar-container {
-  margin: 24px 0;
-  position: relative;
-  max-width: 400px;
-}
-
-.menu-suggestions-dropdown {
-  position: absolute;
-  width: 100%;
-  z-index: 10;
-  max-height: 200px;
-  overflow-y: auto;
+/* Responsive design */
+@media (max-width: 768px) {
+  .menu-restaurant-image {
+    height: 150px;
+  }
+  
+  .menu-category-tabs {
+    gap: 8px;
+  }
+  
+  .menu-item-image {
+    height: 150px;
+  }
 } 

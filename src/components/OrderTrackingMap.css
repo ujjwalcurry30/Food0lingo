@@ -1,0 +1,312 @@
+/* OrderTrackingMap Component Styles */
+.map-container {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  background: white;
+}
+
+.map-wrapper {
+  height: 400px;
+  width: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.leaflet-map {
+  height: 100%;
+  width: 100%;
+}
+
+/* Custom map controls */
+.map-controls {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 1000;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+  padding: 8px;
+}
+
+.map-control-button {
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  padding: 6px 12px;
+  margin: 2px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #333;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.map-control-button:hover {
+  background: #f5f5f5;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Custom markers */
+.custom-marker {
+  background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
+  border: 3px solid white;
+  border-radius: 50%;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+  transition: all 0.3s ease;
+  animation: markerPulse 2s infinite;
+}
+
+.custom-marker:hover {
+  transform: scale(1.2);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+}
+
+.marker-content {
+  background-color: inherit;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 3px solid white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.custom-marker.restaurant {
+  background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
+  animation: restaurantPulse 3s infinite;
+}
+
+.custom-marker.delivery {
+  background: linear-gradient(135deg, #2196f3 0%, #1976d2 100%);
+  animation: deliveryPulse 1.5s infinite;
+}
+
+.custom-marker.customer {
+  background: linear-gradient(135deg, #9c27b0 0%, #7b1fa2 100%);
+  animation: customerPulse 2.5s infinite;
+}
+
+/* Marker animations */
+@keyframes markerPulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+@keyframes restaurantPulse {
+  0% { transform: scale(1); box-shadow: 0 4px 12px rgba(255, 152, 0, 0.3); }
+  50% { transform: scale(1.15); box-shadow: 0 6px 20px rgba(255, 152, 0, 0.5); }
+  100% { transform: scale(1); box-shadow: 0 4px 12px rgba(255, 152, 0, 0.3); }
+}
+
+@keyframes deliveryPulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+@keyframes customerPulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+/* Map popup styling */
+.map-popup {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  border: none;
+  padding: 0;
+}
+
+.map-popup-content {
+  padding: 12px;
+  font-family: 'Poppins', sans-serif;
+}
+
+.map-popup-title {
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.map-popup-description {
+  color: #666;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+/* Connection status indicator */
+.connection-indicator {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  backdrop-filter: blur(10px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.connection-indicator.connected {
+  background: rgba(76, 175, 80, 0.9);
+}
+
+.connection-indicator.disconnected {
+  background: rgba(244, 67, 54, 0.9);
+}
+
+.connection-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  animation: connectionBlink 1.5s infinite;
+}
+
+.connection-dot.connected {
+  background: #4caf50;
+  animation: connectionBlink 1.5s infinite;
+}
+
+.connection-dot.disconnected {
+  background: #f44336;
+  animation: connectionBlink 0.5s infinite;
+}
+
+@keyframes connectionBlink {
+  0% { opacity: 1; }
+  50% { opacity: 0.5; }
+  100% { opacity: 1; }
+}
+
+/* Map loading state */
+.map-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 400px;
+  background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);
+  border-radius: 12px;
+}
+
+.map-loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #e0e0e0;
+  border-top: 4px solid #2196f3;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Map error state */
+.map-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 400px;
+  background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
+  border-radius: 12px;
+  color: #d32f2f;
+  text-align: center;
+  padding: 20px;
+}
+
+.map-error-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+  opacity: 0.7;
+}
+
+.map-error-message {
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.map-error-description {
+  font-size: 14px;
+  opacity: 0.8;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .map-wrapper {
+    height: 300px;
+  }
+  
+  .map-loading {
+    height: 300px;
+  }
+  
+  .map-error {
+    height: 300px;
+  }
+  
+  .connection-indicator {
+    font-size: 10px;
+    padding: 4px 8px;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .map-container {
+    background: #1a1a1a;
+  }
+  
+  .map-controls {
+    background: #2d2d2d;
+    border: 1px solid #404040;
+  }
+  
+  .map-control-button {
+    background: #2d2d2d;
+    border: 1px solid #404040;
+    color: #fff;
+  }
+  
+  .map-control-button:hover {
+    background: #404040;
+  }
+  
+  .map-popup {
+    background: #2d2d2d;
+    color: #fff;
+  }
+  
+  .map-popup-title {
+    color: #fff;
+  }
+  
+  .map-popup-description {
+    color: #ccc;
+  }
+} 

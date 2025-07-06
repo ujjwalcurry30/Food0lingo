@@ -1,64 +1,349 @@
 /* Order Complete page styles */
 
 .order-complete-centered-container {
-  min-height: 80vh;
+  padding: 2rem 0;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   display: flex;
-  flex-direction: column;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
 }
 
 .order-complete-card {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   max-width: 800px;
   width: 100%;
   margin: 0 auto;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.order-complete-status-chip {
-  margin: 0.5rem;
+.order-complete-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.15);
 }
 
 .order-complete-icon-box {
   text-align: center;
-  margin-bottom: 32px;
-}
-
-.order-complete-chips-box {
-  margin-top: 16px;
-}
-
-.order-complete-divider {
-  margin: 24px 0;
-}
-
-.order-complete-items-box {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 8px;
-}
-
-.order-complete-total-box {
-  display: flex;
-  justify-content: space-between;
-}
-
-.order-complete-delivery-box {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background-color: #e3f2fd;
-  padding: 16px;
-  border-radius: 8px;
-}
-
-.order-complete-actions {
-  margin-top: 32px;
-  display: flex;
-  gap: 16px;
-  justify-content: center;
+  padding: 2rem 0;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-radius: 20px 20px 0 0;
 }
 
 .order-complete-icon-large {
-  font-size: 80px !important;
-  margin-bottom: 16px;
+  font-size: 4rem !important;
+  margin-bottom: 1rem;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.order-complete-icon-box h4 {
+  color: #333;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.order-complete-icon-box p {
+  color: #666;
+  font-size: 1.1rem;
+}
+
+.order-complete-chips-box {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.order-complete-status-chip {
+  border-radius: 20px;
+  font-weight: 600;
+  padding: 8px 16px;
+  transition: transform 0.2s ease;
+}
+
+.order-complete-status-chip:hover {
+  transform: translateY(-2px);
+}
+
+.order-complete-divider {
+  margin: 2rem 0;
+  opacity: 0.3;
+}
+
+.order-complete-item-list {
+  padding: 12px 0;
+  border-radius: 12px;
+  transition: background-color 0.2s ease;
+  margin-bottom: 8px;
+}
+
+.order-complete-item-list:hover {
+  background-color: rgba(0, 0, 0, 0.02);
+}
+
+.order-complete-food-avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+}
+
+.order-complete-food-avatar:hover {
+  transform: scale(1.1);
+}
+
+.order-complete-item-text .MuiListItemText-primary {
+  font-weight: 600;
+  color: #333;
+  font-size: 1rem;
+}
+
+.order-complete-item-text .MuiListItemText-secondary {
+  color: #666;
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.order-complete-bill-paper {
+  border-radius: 16px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: #fff;
+  color: #222;
+  transition: transform 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  margin-bottom: 1rem;
+}
+.order-complete-bill-paper:hover {
+  transform: translateY(-2px);
+}
+.order-complete-bill-paper .MuiTypography-root {
+  color: #222;
+}
+
+/* Estimated Delivery Time Card */
+.order-complete-delivery-box {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.2rem 1.5rem;
+  background: linear-gradient(90deg, #e3f2fd 0%, #bbdefb 100%);
+  border-radius: 14px;
+  margin: 1.5rem 0 0.5rem 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  border: 1px solid #e3f2fd;
+}
+.order-complete-delivery-box .MuiSvgIcon-root {
+  font-size: 2rem;
+  color: #1976d2;
+}
+.order-complete-delivery-box .MuiTypography-root {
+  color: #222;
+}
+.order-complete-delivery-box .MuiTypography-h6 {
+  color: #1976d2;
+  font-weight: 700;
+}
+
+.order-complete-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.order-complete-continue-btn {
+  border-radius: 25px;
+  text-transform: none;
+  font-weight: 600;
+  padding: 12px 30px;
+  transition: all 0.3s ease;
+  border: 2px solid #667eea;
+  color: #667eea;
+}
+
+.order-complete-continue-btn:hover {
+  background-color: #667eea;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
+}
+
+.order-complete-track-btn {
+  border-radius: 25px;
+  text-transform: none;
+  font-weight: 600;
+  padding: 12px 30px;
+  transition: all 0.3s ease;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.order-complete-track-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .order-complete-card {
+    background: rgba(30, 30, 30, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .order-complete-icon-box {
+    background: linear-gradient(135deg, #2c2c2c 0%, #1a1a1a 100%);
+  }
+  
+  .order-complete-icon-box h4 {
+    color: #fff;
+  }
+  
+  .order-complete-icon-box p {
+    color: #ccc;
+  }
+  
+  .order-complete-item-text .MuiListItemText-primary {
+    color: #fff;
+  }
+  
+  .order-complete-item-text .MuiListItemText-secondary {
+    color: #aaa;
+  }
+  
+  .order-complete-bill-paper {
+    background: #23272f;
+    color: #fff;
+    border: 1px solid #333;
+  }
+  .order-complete-bill-paper .MuiTypography-root {
+    color: #fff;
+  }
+  .order-complete-delivery-box {
+    background: linear-gradient(90deg, #23272f 0%, #1a1a1a 100%);
+    border: 1px solid #23272f;
+  }
+  .order-complete-delivery-box .MuiTypography-root {
+    color: #fff;
+  }
+  .order-complete-delivery-box .MuiTypography-h6 {
+    color: #90caf9;
+  }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .order-complete-centered-container {
+    padding: 1rem;
+  }
+  
+  .order-complete-card {
+    margin: 0;
+    border-radius: 16px;
+  }
+  
+  .order-complete-icon-box {
+    padding: 1.5rem 0;
+  }
+  
+  .order-complete-icon-large {
+    font-size: 3rem !important;
+  }
+  
+  .order-complete-chips-box {
+    gap: 0.5rem;
+  }
+  
+  .order-complete-status-chip {
+    font-size: 0.75rem;
+    padding: 6px 12px;
+  }
+  
+  .order-complete-food-avatar {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .order-complete-actions {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .order-complete-continue-btn,
+  .order-complete-track-btn {
+    padding: 10px 20px;
+    font-size: 0.875rem;
+  }
+}
+
+/* Animation for order completion */
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.order-complete-card {
+  animation: slideInUp 0.8s ease-out;
+}
+
+/* Enhanced hover effects */
+.order-complete-card:hover .order-complete-food-avatar {
+  transform: scale(1.15);
+}
+
+.order-complete-card:hover .order-complete-status-chip {
+  transform: scale(1.05);
+}
+
+/* Loading animation for images */
+.order-complete-food-avatar {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+} 
+
+.order-complete-bill-paper,
+.order-complete-bill-paper * {
+  color: #222 !important;
+  background: transparent !important;
+}
+
+@media (prefers-color-scheme: dark) {
+  .order-complete-bill-paper,
+  .order-complete-bill-paper * {
+    background: transparent !important;
+  }
 } 

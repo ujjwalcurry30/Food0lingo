@@ -19,6 +19,8 @@ import {
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { clearCart, setFirstOrder } from '../redux/slices/cartSlice';
+import { createOrderFromCart } from '../redux/slices/orderTrackingSlice';
+import socketService from '../utils/socketService';
 import './Checkout.css';
 import UPIPayment from '../components/UPIPayment';
 
@@ -26,6 +28,8 @@ const Checkout = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { items, total, deliveryCharge, gst, firstOrderDiscount } = useSelector((state) => state.cart);
+  const selectedRestaurant = useSelector((state) => state.restaurants.selectedRestaurant);
+  const { nextOrderId } = useSelector((state) => state.orderTracking);
   const [paymentMethod, setPaymentMethod] = useState('upi');
   const [upiDialogOpen, setUpiDialogOpen] = useState(false);
   const [formData, setFormData] = useState({
@@ -39,6 +43,8 @@ const Checkout = () => {
     cvv: '',
   });
   const [orderPlaced, setOrderPlaced] = useState(false);
+  const [createdOrder, setCreatedOrder] = useState(null);
+  const [locationLoading, setLocationLoading] = useState(false);
 
   const handleInputChange = (e) => {
     setFormData({
@@ -60,19 +66,219 @@ const Checkout = () => {
     setPaymentMethod(event.target.value);
   };
 
+  const createOrder = () => {
+    console.log('Creating order...');
+    console.log('Selected restaurant:', selectedRestaurant);
+    console.log('Items:', items);
+    console.log('Form data:', formData);
+
+    if (!selectedRestaurant) {
+      console.error('No restaurant selected');
+      // Use a default restaurant if none is selected
+      const defaultRestaurant = {
+        id: 1,
+        name: "Spice Garden",
+        cuisine: "Indian",
+        rating: 4.5
+      };
+      
+      const customerInfo = {
+        name: formData.name,
+        email: formData.email,
+        address: `${formData.address}, ${formData.city} - ${formData.zipCode}`,
+        paymentMethod: paymentMethod
+      };
+
+      const restaurantInfo = defaultRestaurant;
+
+      // Create order in Redux
+      dispatch(createOrderFromCart({
+        cartItems: items,
+        customerInfo: customerInfo,
+        restaurantInfo: restaurantInfo,
+        total: finalTotal
+      }));
+
+      // Get the created order ID
+      const newOrderId = nextOrderId;
+      setCreatedOrder(newOrderId);
+
+      // Create order on backend via Socket.IO
+      const orderData = {
+        items: items.map(item => ({
+          id: item.id,
+          name: item.name,
+          quantity: item.quantity,
+          price: item.price
+        })),
+        total: finalTotal,
+        customerInfo: customerInfo,
+        restaurantInfo: restaurantInfo,
+        deliveryAddress: customerInfo.address,
+        paymentMethod: paymentMethod
+      };
+
+      socketService.createOrder(orderData);
+      return;
+    }
+
+    const customerInfo = {
+      name: formData.name,
+      email: formData.email,
+      address: `${formData.address}, ${formData.city} - ${formData.zipCode}`,
+      paymentMethod: paymentMethod
+    };
+
+    const restaurantInfo = {
+      id: selectedRestaurant.id,
+      name: selectedRestaurant.name,
+      cuisine: selectedRestaurant.cuisine,
+      rating: selectedRestaurant.rating
+    };
+
+    // Create order in Redux
+    dispatch(createOrderFromCart({
+      cartItems: items,
+      customerInfo: customerInfo,
+      restaurantInfo: restaurantInfo,
+      total: finalTotal
+    }));
+
+    // Get the created order ID
+    const newOrderId = nextOrderId;
+    setCreatedOrder(newOrderId);
+
+    // Create order on backend via Socket.IO
+    const orderData = {
+      items: items.map(item => ({
+        id: item.id,
+        name: item.name,
+        quantity: item.quantity,
+        price: item.price
+      })),
+      total: finalTotal,
+      customerInfo: customerInfo,
+      restaurantInfo: restaurantInfo,
+      deliveryAddress: customerInfo.address,
+      paymentMethod: paymentMethod
+    };
+
+    socketService.createOrder(orderData);
+  };
+
   const handlePaymentComplete = (paymentDetails) => {
     console.log('Payment completed:', paymentDetails);
+    createOrder();
     dispatch(clearCart());
-    navigate('/order-complete');
+    navigate('/order-complete', { 
+      state: { 
+        orderId: createdOrder || 1,
+        orderDetails: {
+          items: items,
+          total: finalTotal,
+          restaurant: selectedRestaurant?.name || 'Restaurant',
+          customerInfo: formData
+        }
+      }
+    });
   };
 
   const handleProceedToPay = () => {
+    // Validate form data
+    if (!formData.name || !formData.email || !formData.address || !formData.city || !formData.zipCode) {
+      alert('Please fill in all required fields');
+      return;
+    }
+
+    if (paymentMethod === 'card' && (!formData.cardNumber || !formData.expiryDate || !formData.cvv)) {
+      alert('Please fill in all card details');
+      return;
+    }
+
     if (paymentMethod === 'upi') {
       setUpiDialogOpen(true);
     } else {
+      createOrder();
       dispatch(clearCart());
-      navigate('/order-complete');
+      navigate('/order-complete', { 
+        state: { 
+          orderId: createdOrder || 1,
+          orderDetails: {
+            items: items,
+            total: finalTotal,
+            restaurant: selectedRestaurant?.name || 'Restaurant',
+            customerInfo: formData
+          }
+        }
+      });
     }
+  };
+
+  // Geolocation and reverse geocoding
+  const handleSelectLocation = async () => {
+    if (!navigator.geolocation) {
+      alert('Geolocation is not supported by your browser.');
+      return;
+    }
+    setLocationLoading(true);
+    navigator.geolocation.getCurrentPosition(async (position) => {
+      const { latitude, longitude } = position.coords;
+      alert(`Location detected!\nLatitude: ${latitude}\nLongitude: ${longitude}`);
+      try {
+        // Use OpenStreetMap Nominatim for reverse geocoding
+        const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}`);
+        if (!response.ok) {
+          alert('Reverse geocoding failed.');
+          setFormData((prev) => ({
+            ...prev,
+            address: `Lat: ${latitude}, Lon: ${longitude}`,
+            city: '',
+            zipCode: '',
+            latitude,
+            longitude
+          }));
+          setLocationLoading(false);
+          return;
+        }
+        const data = await response.json();
+        if (!data.display_name) {
+          alert('No address found for your location.');
+          setFormData((prev) => ({
+            ...prev,
+            address: `Lat: ${latitude}, Lon: ${longitude}`,
+            city: '',
+            zipCode: '',
+            latitude,
+            longitude
+          }));
+          setLocationLoading(false);
+          return;
+        }
+        setFormData((prev) => ({
+          ...prev,
+          address: data.display_name,
+          city: data.address.city || data.address.town || data.address.village || '',
+          zipCode: data.address.postcode || '',
+          latitude,
+          longitude
+        }));
+        alert('Address autofilled!');
+      } catch (err) {
+        alert('Failed to fetch address from location.');
+        setFormData((prev) => ({
+          ...prev,
+          address: `Lat: ${latitude}, Lon: ${longitude}`,
+          city: '',
+          zipCode: '',
+          latitude,
+          longitude
+        }));
+      }
+      setLocationLoading(false);
+    }, (error) => {
+      alert('Unable to retrieve your location. Reason: ' + error.message);
+      setLocationLoading(false);
+    });
   };
 
   if (items.length === 0 && !orderPlaced) {
@@ -173,6 +379,17 @@ const Checkout = () => {
                           value={formData.zipCode}
                           onChange={handleInputChange}
                         />
+                      </Grid>
+                      <Grid item xs={12}>
+                        <Button
+                          variant="outlined"
+                          color="primary"
+                          onClick={handleSelectLocation}
+                          disabled={locationLoading}
+                          style={{ marginTop: 8 }}
+                        >
+                          {locationLoading ? 'Detecting Location...' : 'Select Location'}
+                        </Button>
                       </Grid>
                     </Grid>
                   </CardContent>

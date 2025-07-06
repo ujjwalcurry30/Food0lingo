@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Container,
   Typography,
@@ -14,12 +14,18 @@ import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { removeFromCart, updateQuantity } from '../redux/slices/cartSlice';
 import { Add as AddIcon, Remove as RemoveIcon, Delete as DeleteIcon } from '@mui/icons-material';
+import Notification from '../components/Notification';
 import './Cart.css';
 
 const Cart = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { items, total, deliveryCharge, gst, firstOrderDiscount } = useSelector((state) => state.cart);
+  const [notification, setNotification] = useState({
+    open: false,
+    message: '',
+    severity: 'success'
+  });
 
   const handleQuantityChange = (item, change) => {
     const newQuantity = item.quantity + change;
@@ -29,7 +35,28 @@ const Cart = () => {
   };
 
   const handleRemoveItem = (itemId) => {
+    const itemToRemove = items.find(item => item.id === itemId);
     dispatch(removeFromCart(itemId));
+    
+    // Show notification - force a new notification each time
+    setNotification({
+      open: false, // First close any existing notification
+      message: '',
+      severity: 'info'
+    });
+    
+    // Use setTimeout to ensure the notification state is reset before showing new one
+    setTimeout(() => {
+      setNotification({
+        open: true,
+        message: `${itemToRemove.name} removed from cart`,
+        severity: 'info'
+      });
+    }, 100);
+  };
+
+  const handleCloseNotification = () => {
+    setNotification(prev => ({ ...prev, open: false }));
   };
 
   if (items.length === 0) {
@@ -54,6 +81,14 @@ const Cart = () => {
 
   return (
     <Container>
+      {/* Notification */}
+      <Notification
+        open={notification.open}
+        message={notification.message}
+        severity={notification.severity}
+        onClose={handleCloseNotification}
+      />
+
       <Card>
         <CardContent>
           <Typography variant="h5" gutterBottom align="center">

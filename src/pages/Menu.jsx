@@ -17,6 +17,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart } from '../redux/slices/cartSlice';
 import { updateItemPopularity } from '../redux/slices/restaurantSlice';
+import Notification from '../components/Notification';
 import './Menu.css';
 import TextField from '@mui/material/TextField';
 import InputAdornment from '@mui/material/InputAdornment';
@@ -31,6 +32,11 @@ const Menu = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [suggestions, setSuggestions] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
+  const [notification, setNotification] = useState({
+    open: false,
+    message: '',
+    severity: 'success'
+  });
 
   useEffect(() => {
     if (location.state?.category) {
@@ -74,10 +80,38 @@ const Menu = () => {
       restaurantId: selectedRestaurant.id,
       itemId: item.id
     }));
+    
+    // Show notification - force a new notification each time
+    setNotification({
+      open: false, // First close any existing notification
+      message: '',
+      severity: 'success'
+    });
+    
+    // Use setTimeout to ensure the notification state is reset before showing new one
+    setTimeout(() => {
+      setNotification({
+        open: true,
+        message: `${item.name} added to cart!`,
+        severity: 'success'
+      });
+    }, 100);
+  };
+
+  const handleCloseNotification = () => {
+    setNotification(prev => ({ ...prev, open: false }));
   };
 
   return (
     <Container>
+      {/* Notification */}
+      <Notification
+        open={notification.open}
+        message={notification.message}
+        severity={notification.severity}
+        onClose={handleCloseNotification}
+      />
+
       {/* Restaurant Info */}
       <Paper elevation={3} className="menu-restaurant-info">
         <Grid container spacing={3} alignItems="center">
@@ -149,7 +183,7 @@ const Menu = () => {
             {suggestions.map((item) => (
               <Box
                 key={item.id}
-                sx={{ p: 1, cursor: 'pointer', '&:hover': { background: '#f0f0f0' } }}
+                className="menu-suggestion-item"
                 onMouseDown={() => {
                   setSearchQuery(item.name);
                   setShowSuggestions(false);
